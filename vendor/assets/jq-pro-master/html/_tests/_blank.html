@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="../../css/bootstrap.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="../../css/mdb.css">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+      .select-dropdown .selected, .select-dropdown li:focus {
+        background-color: rgba(0,0,0,.15) !important;
+      }
+
+      .select-dropdown li.active {
+        background: transparent;
+      }
+
+      .select-dropdown .fa {
+        color: inherit;
+      }
+
+      .multiple-select-dropdown li [type="checkbox"] + label:before {
+        margin-top: -3px;
+      }
+
+      select.custom-select {
+        display: block;
+      }
+
+      .select-wrapper input[type="text"].select-dropdown {
+        padding-right: 25px;
+        text-overflow: ellipsis;
+      }
+    </style>
+
+</head>
+
+<body>
+
+  <!-- Button trigger modal -->
+<!--   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal">
+    Launch demo modal
+  </button> -->
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+
+        <select class="custom-select" multiple size="10" required>
+          <option value="" disabled selected>Choose your favorite song</option>
+          <option value="1">Nothing else matters</option>
+          <option value="2">November Rain</option>
+          <option value="3">Bohemian Rhapsody</option>
+          <option value="4">The Final Countdown</option>
+          <option value="5">Smells Like Teen Spirit</option>
+          <option value="6">Stairway to Heaven</option>
+          <option value="7">Smoke on the water</option>
+          <option value="8">Here I Go Again</option>
+          <option value="9">Rock you like a Hurricane</option>
+          <option value="10">Walk This Way</option>
+          <option value="11">Another brick in the wall</option>
+        </select>
+
+        <br><br>
+
+        <select class="custom-select" id="mySelectId" required>
+          <option value="" disabled selected>Choose your favorite song</option>
+          <option label="a song" value="1">Nothing else matters</option>
+          <option label="a song" value="2">November Rain</option>
+          <option label="a song" value="3">Bohemian Rhapsody</option>
+          <option label="a song" value="4">The Final Countdown</option>
+          <option label="a song" value="5">Smells Like Teen Spirit</option>
+          <option label="a song" value="6">Stairway to Heaven</option>
+          <option label="a song" value="7">Smoke on the water</option>
+          <option label="a song" value="8">Here I Go Again</option>
+          <option label="a song" value="9">Rock you like a Hurricane</option>
+          <option label="a song" value="10">Walk This Way</option>
+          <option label="a song" value="11">Another brick in the wall</option>
+        </select>
+
+      </div>
+      <div class="col-md-6">
+        <div class="mt-5 mx-auto" style="position:relative;">
+          <select class="mdb-select" id="select" searchable="Find..." multiple="">
+            <option value="" disabled selected>Choose your favorite song</option>
+            <option value="1">Nothing else matters</option>
+            <option value="2">November Rain</option>
+            <option value="3">Bohemian Rhapsody</option>
+            <option value="4">The Final Countdown</option>
+            <option value="5">Smells Like Teen Spirit</option>
+            <option value="6">Stairway to Heaven</option>
+            <option value="7">Smoke on the water</option>
+            <option value="8">Here I Go Again</option>
+            <option value="9">Rock you like a Hurricane</option>
+            <option value="10">Walk This Way</option>
+            <option value="11">Another brick in the wall</option>
+          </select>
+          <label>Example label</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+    <!-- Start your project here-->
+    <div id="selectParent"></div>
+    <!-- /Start your project here-->
+
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="../../js/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <!-- <script type="text/javascript" src="../../js/mdb.js"></script> -->
+
+    <script src="../../js/modules/vendor/jquery.easing.js"></script>
+    <script src="../../js/modules/src/dropdown.js"></script>
+    <script src="../../js/modules/src/material-select.js"></script>
+
+    <script>
+    $(document).ready(function() {
+      $('.mdb-select').material_select({
+        parent: '#selectParent'
+      });
+    });
+
+    $(document).on('show.mdb.select', function() {
+      console.log('Opened');
+    });
+
+    $(document).on('hide.mdb.select', function() {
+      console.log('Closed');
+    });
+
+    $('#mySelectId').focus(function(){
+      $(this).attr("size",1);
+      var x = "select[tabindex='" + (parseInt($(this).attr('tabindex'),10) + 1) + "']";
+    });
+    </script>
+</body>
+
+</html>

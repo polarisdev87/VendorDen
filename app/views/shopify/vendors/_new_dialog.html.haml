@@ -1,0 +1,34 @@
+.modal.fade{'id' => 'new-vendor-dialog', 'role' => 'dialog', :tabindex => "-1"}
+  .modal-dialog{'role' => 'document'}
+    .modal-content
+      .modal-header
+        %button.close{'aria-label' => 'Close', 'data-dismiss' => 'modal', 'type' => 'button'}
+          %span{'aria-hidden' => 'true'} ×
+        %h4.modal-title New Vendor
+      .modal-body
+        = render partial: 'shopify/vendors/form'
+
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+        %button.btn.btn-primary.save{:type => "button"} Save changes
+
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      $('#new-vendor-dialog').on('shown.bs.modal', function (e) {
+        
+        var $dialog = $(this);
+        var $form = $dialog.find('#new-vendor-form');
+        var $saveButton = $dialog.find('.modal-footer button.save');
+        $saveButton.on('click', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          $form.submit();
+          $saveButton.html('Saving...');
+          $saveButton.attr('disabled', 'disabled');
+        });
+        $form.find('input[name="vendor[name]"]').focus();
+      });
+    })(window);

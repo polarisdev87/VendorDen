@@ -1,0 +1,7 @@
+(function(global) {
+  'use strict';
+  $('#booked-products-table tr[data-id="<%= @product.id %>"]').fadeOut(function() { 
+    $(this).remove(); 
+    window.location.reload();
+  });
+})(window);

@@ -1,0 +1,6 @@
+(function(global) {
+  'use strict';
+
+  var $editDialog = $('#edit-time-slot-dialog');
+  $editDialog.find('.modal-body').html('<%= j(render(partial: "shopify/time_slots/edit_form", locals: {time_slot: @time_slot, no_wrap_on_extra_javascript: true})) %>');
+})(window);

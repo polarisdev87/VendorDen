@@ -1,0 +1,37 @@
+- content_for(:extra_page_title, current_vendor.business_name)
+= render partial: 'vendors/side_bar', locals: {menu_selected: :payouts_history}
+
+%h2.page-header
+  Payouts History
+
+.row
+  .col-md-12
+    %table.table.table-hover.table-striped{'id' => 'payouts-table'}
+      %thead
+        %th ID
+        %th Product
+        %th $ Sold
+        %th $ Shop Commision
+        %th $ My Commision
+        %th Status
+      %tbody
+        - @payouts.each do |payout|
+          %tr{'data-id' => payout.id}
+            %td= payout.id
+            %td= (payout.product.title rescue '--removed--')
+            %td= payout.amount_sold
+            %td= payout.amount_commissions_earned
+            %td= payout.amount_to_be_paid_out
+            %td= payout.status.humanize
+            %td
+              - unless payout.is_unpaid?
+                = payout.payment_type.humanize
+    
+
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      
+    })(window);

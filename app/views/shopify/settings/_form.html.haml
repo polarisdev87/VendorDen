@@ -1,0 +1,32 @@
+= form_for (local_assigns[:setting] || @setting || current_shop.setting), url: local_assigns[:form_url] || shopify_setting_path, html: {'id' => 'setting-form'} do |f|
+
+  .form-group{'class' => "#{f.object.errors[:minimum_commission_per_product].present? ? 'has-error' : ''}"}
+    %h4 Amount that you will keep - the rest goes to the vendor (Default value)
+    .row
+      .col-md-2
+        = f.number_field :minimum_commission_per_product, placeholder: '0', 'class' => 'form-control', 'style' => 'width:100%; text-align: right;', 'required' => 'true'
+        - if f.object.errors[:minimum_commission_per_product].present?
+          %span.help-block= f.object.errors[:minimum_commission_per_product].join(', ')
+      .col-md-10
+        = f.select :structure_type, [['USD per product or time schedule booking', '$'], ['% per product or time schedule booking', '%']], {}, 'class' => 'form-control', 'style' => 'width:100%;'
+    %br/
+    %h4 Client Calendar Setup
+    .alert.alert-info
+      %p
+        Please create a page for booking calendar and put &lt;div id="your-dom-id-entered-below"&gt;&lt;/div&gt;
+    .row
+      .col-md-12
+        %label Booking Calendar page path
+        .input-group
+          %span.input-group-addon
+            = "https://#{current_shop.shopify_domain}"
+          = f.text_field :client_calendar_shop_path, placeholder: Setting::DEFAULT_CLIENT_CALENDAR_SHOP_PATH, 'class' => 'form-control', 'style' => 'width:100%;'
+      .col-md-12
+        %label DOM Id
+        .input-group
+          %span.input-group-addon
+            \#
+          = f.text_field :client_calendar_html_id, placeholder: Setting::DEFAULT_CLIENT_CALENDAR_HTML_ID, 'class' => 'form-control', 'style' => 'width:100%;'
+  - if local_assigns[:show_submit]
+    .form-commands
+      = f.submit 'Save settings', 'class' => 'btn btn-primary'

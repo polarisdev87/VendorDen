@@ -1,0 +1,24 @@
+:javascript
+  (function(global) {
+    'use strict';
+
+    ShopifyApp.ready(function() {
+
+      var $form = $('##{form_html_id}');
+
+      var showHideOnAllDayChange = function(allDayCheckbox) {
+        var checked = $(allDayCheckbox).prop('checked');
+        if (checked) {
+          $form.find('input[name="time_slot[start_time]"]').parents('.form-group').hide();
+          $form.find('input[name="time_slot[end_time]"]').parents('.form-group').hide();
+        } else {
+          $form.find('input[name="time_slot[start_time]"]').parents('.form-group').show();
+          $form.find('input[name="time_slot[end_time]"]').parents('.form-group').show();
+        }
+      };
+
+      $form.find('input[name="time_slot[is_all_day]"]').on('change', function(e) {
+        showHideOnAllDayChange(e.target);
+      }).change();
+    });
+  })(window);

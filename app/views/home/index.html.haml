@@ -1,0 +1,63 @@
+!!!
+%html{'data-home' => true}
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title 
+      = app_name
+
+    = csrf_meta_tags
+    = csp_meta_tag
+    
+    :plain
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    :plain
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    = stylesheet_link_tag 'application', media: 'all'
+    
+    :plain
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+
+  %body.home.cd-shopify-skin{'aria-busy' => 'true'}
+    %header
+      %nav.navbar.navbar-expand-lg.navbar-dark.fixed-top.scrolling-navbar.top-nav-collapse
+        .container
+          %a.navbar-brand{:href => "/"}
+            = app_logo
+            %strong 
+              = app_name
+
+      .view{:style => "background-image: url('#{asset_path('home_bg.jpg')}'); background-repeat: no-repeat; background-size: cover; background-position: center center;"}
+        .mask.rgba-gradient.d-flex.justify-content-center.align-items-center
+          .container
+            .row
+              .col-md-4
+                &nbsp;
+              .col-md-4.white-text.text-center.text-md-left.mt-xl-5.mb-5.wow.fadeInLeft{"data-wow-delay" => "0.3s", :style => "visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;"}
+                %h1.h1-responsive.font-weight-bold.mt-sm-5 
+                  Shopify&trade; App
+                %hr.hr-light/
+                %h6.mb-4
+                  An app that allows you to book and payout vendors.
+                %a.btn.btn-white.waves-effect.waves-light{'href' => '/shopify'} Install
+                %a.btn.btn-outline-white.waves-effect.waves-light{'href' => '/users/sign_in'} Login
+    %main
+      .container
+        .row.py-5
+          .col-md-12.text-center
+            %p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+
+    = javascript_include_tag 'application'
+
+    :javascript
+      new WOW().init();

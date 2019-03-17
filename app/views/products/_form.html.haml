@@ -1,0 +1,41 @@
+= form_for product, url: form_url, html: {'id' => form_html_id} do |f|
+
+
+  .form-group{'class' => "#{f.object.errors[:title].present? ? 'has-error' : ''}"}
+    = f.label :title, 'Title', 'class' => ''
+    = f.text_field :title, 'class' => 'form-control', required: true
+    - if f.object.errors[:title].present?
+      %span.help-block= f.object.errors[:title].join(', ')
+
+
+  .form-group{'class' => "#{f.object.errors[:cost_of_goods].present? ? 'has-error' : ''}"}
+    = f.label :cost_of_goods, 'Cost of Goods', 'class' => ''
+    .input-group.mb-3
+      = f.number_field :cost_of_goods, 'class' => 'form-control'
+      %span.input-group-append
+        .input-group-text
+          USD
+    - if f.object.errors[:cost_of_goods].present?
+      %span.help-block= f.object.errors[:cost_of_goods].join(', ')
+
+  
+  %label Amount that you will keep - the rest goes to the vendor
+  .form-group{'class' => "#{f.object.errors[:minimum_commission_per_product].present? ? 'has-error' : ''}"}
+    .row
+      .col-md-2
+        = f.number_field :minimum_commission_per_product, placeholder: '0', 'class' => 'form-control', 'style' => 'width:100%; text-align: right;', 'required' => 'true'
+        - if f.object.errors[:minimum_commission_per_product].present?
+          %span.help-block= f.object.errors[:minimum_commission_per_product].join(', ')
+      .col-md-10
+        = f.select :commission_structure_type, [['USD per product or time schedule booking', '$'], ['% per product or time schedule booking', '%']], {}, 'class' => 'form-control', 'style' => 'display: block !important;'
+
+  - if product.is_physical_product?
+    .form-group
+      = f.label :stocks_available, 'Inventory', 'class' => ''
+      = f.number_field :stocks_available, value: product.inventory_quantity, 'class' => 'form-control', readonly: true
+      %small.form-text.text-muted
+        Inventory can be adjusted only at shopify admin.
+
+  - if local_assigns[:show_submit]
+    .form-commands
+      = f.submit 'Save', 'class' => 'btn btn-primary'

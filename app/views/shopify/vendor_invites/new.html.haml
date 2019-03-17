@@ -1,0 +1,52 @@
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      ShopifyApp.ready(function() {
+
+        ShopifyApp.Bar.initialize({ 
+          title: 'Invite a Vendor',
+          breadcrumb: {
+            label: "Home",
+            href: "#{shopify_root_path}",
+            target: 'app',
+            loading: false
+          } 
+        });
+
+        $('#save-vendor-invite-button').on('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var $button = $(this);
+          $button.html('Sending...');
+          $button.attr('disabled', 'disabled');
+
+          var $form = $('#new-vendor-invite-form');
+          $form.submit();
+        });
+      });
+
+
+    })(window);
+
+.Polaris-Page
+  .Polaris-Page__Header.Polaris-Page__Header--hasBreadcrumbs.Polaris-Page__Header--hasSecondaryActions.Polaris-Page__Header--hasSeparator
+    .Polaris-Page__MainContent
+      
+      .Polaris-Page__TitleAndActions
+        .Polaris-Page__Title
+          %h1.Polaris-DisplayText.Polaris-DisplayText--sizeLarge 
+            Invite a Vendor
+      
+      .Polaris-Page__PrimaryAction
+        .btn-group
+          %button{'type' => 'button', 'class' => 'btn btn-primary', 'id' => 'save-vendor-invite-button'}
+            Send
+
+  .Polaris-Page__Content
+    .Polaris-Layout
+      .Polaris-Layout__Section
+        .container-fluid
+          = render partial: 'shopify/vendor_invites/form'

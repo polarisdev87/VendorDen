@@ -1,0 +1,19 @@
+%h2.page-title
+  Orders
+
+.row
+  .col-md-12
+    .card
+      .card-body
+        = render partial: 'orders/table', locals: {orders: @orders}
+    
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      $(function() {
+
+      });
+      
+    })(window);

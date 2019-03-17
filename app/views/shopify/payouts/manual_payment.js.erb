@@ -1,0 +1,9 @@
+(function(global) {
+  'use strict';
+
+  var $ctx = $('#payouts-table');
+  $ctx.find('tr[data-id=<%= @payout.id %>]').fadeOut(function() {
+    $(this).replaceWith('<%= j(render(partial: "shopify/payouts/table_row", locals: {payout: @payout})) %>');
+    $(this).fadeIn();
+  });
+})(window);

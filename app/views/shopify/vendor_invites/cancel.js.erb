@@ -1,0 +1,13 @@
+(function() {
+  'use strict';
+
+  <% if @vendor_invite.can_cancel? %>
+    $('#vendor-invites-table tr[data-id=<%= @vendor_invite.id %>]').fadeOut(1000, function() {
+      $('#vendor-invites-table-section').replaceWith('<%= j(render(partial: "shopify/vendor_invites/table", locals: {vendor_invites: @vendor_invites})) %>');
+      ShopifyApp.flashNotice('Vendor invitation to <%= @vendor_invite.email %> was sucessfully cancelled.');  
+    });
+  <% else %>
+    $('#vendor-invites-table-section').replaceWith('<%= j(render(partial: "shopify/vendor_invites/table", locals: {vendor_invites: @vendor_invites})) %>');
+    ShopifyApp.flashError('Vendor invitation to <%= @vendor_invite.email %> was already accepted.');  
+  <% end %>
+})();

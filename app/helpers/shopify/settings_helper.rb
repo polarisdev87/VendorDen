@@ -1,0 +1,2 @@
+module Shopify::SettingsHelper
+end

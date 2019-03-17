@@ -1,0 +1,9 @@
+= form_for time_slot, url: shopify_time_slots_path, html: {'id' => 'new-time-slot-form'} do |f|
+
+  = render partial: 'shopify/time_slots/form_fields', locals: {f: f}
+
+- content_for(:extra_javascript) do
+  = render partial: 'shopify/time_slots/form_scripts', locals: {form_html_id: 'new-time-slot-form'}
+
+
+

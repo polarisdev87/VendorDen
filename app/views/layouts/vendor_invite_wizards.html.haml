@@ -1,0 +1,53 @@
+!!!
+%html
+  %head
+    %meta{'content' => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{'charset' => "utf-8"}/
+    %meta{'content' => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}/
+    %meta{'content' => "ie=edge", "http-equiv" => "x-ua-compatible"}/
+    
+    %title= app_name
+
+    = csrf_meta_tag
+    = csp_meta_tag
+    
+    :plain
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    = stylesheet_link_tag 'application', media: 'all'
+    - if content_for?(:extra_css)
+      = yield :extra_css
+    
+    :plain
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+
+  %body.cd-shopify-skin.application-wizard{'class' => body_class}
+
+    %nav.navbar.navbar-expand-lg.navbar-dark.double-nav.fixed-top.scrolling-navbar
+  
+      .container
+
+        %h1.navbar-brand.ml-3 
+          = page_title       
+
+    %main
+      .container 
+        = yield
+
+    %footer.page-footer.mt-4.fixed-bottom
+      .footer-copyright.text-center.py-3
+        .container-fluid
+          © 2019 Copyright:
+          = link_to "Launch Peer", 'https://launchpeer.com'    
+    
+    - if content_for?(:extra_html)
+      = yield :extra_html
+
+    = javascript_include_tag 'application'
+    - if content_for?(:extra_javascript)
+      = yield :extra_javascript

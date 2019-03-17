@@ -1,0 +1,79 @@
+.modal.fade{'id' => 'edit-time-slot-dialog', 'role' => 'dialog', :tabindex => "-1"}
+  .modal-dialog{'role' => 'document'}
+    .modal-content
+      .modal-header
+        %h4.pull-left.modal-title Edit TimeSlot {0}
+
+        .btn-group.pull-right
+          -#%button.btn.btn-default.new-booking{:type => "button", 'disabled' => true} 
+          -#  Create New Booking
+
+      .modal-body
+        %p
+          Loading form...
+      .modal-footer
+        
+        %button.btn.btn-default.delete{:type => "button", 'disabled' => true} Delete
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Cancel
+        %button.btn.btn-primary.save{:type => "button", 'disabled' => true} Save
+
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+      var $editDialog = $('#edit-time-slot-dialog');
+
+      $editDialog.on('show.bs.modal', function (e) {
+        var $dialog = $(this);
+        var calEvent = $dialog.data('calEvent');
+        $dialog.find('.modal-header .modal-title').html('Edit TimeSlot ' + calEvent.title);
+        $.ajax({
+          url: calEvent.editPath,
+          dataType: 'script',
+          success: function() {
+            var $saveButton = $dialog.find('.modal-footer button.save');
+            var $newBookingButton = $dialog.find('button.new-booking');
+            var $deleteButton = $dialog.find('.modal-footer button.delete');
+
+            $newBookingButton.prop('disabled', false);
+            $newBookingButton.on('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              $editDialog.modal('hide');
+
+              setTimeout(function() {
+
+              }, 500);
+            });
+
+            $saveButton.prop('disabled', false);
+            $saveButton.on('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              $(this).html('Saving...').prop('disabled', true);
+              $dialog.find('#edit-time-slot-form').submit();
+            });
+
+            $deleteButton.prop('disabled', false);
+            $deleteButton.on('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+
+              if (confirm("Are you sure you want to delete this TimeSlot?")) {
+                $(this).html('Deleting...').prop('disabled', true);
+                $('body').append('<form id="delete-time-slot-form" class="hidden" action="' + calEvent.deletePath + '" method="POST"><input type="hidden" name="_method" value="delete"/><input type="hidden" name="authenticity_token" value="#{form_authenticity_token}"/></form>');
+                $('#delete-time-slot-form').submit();
+              }
+            });
+          }
+        });
+      });
+      $editDialog.on('hidden.bs.modal', function (e) {
+        var $dialog = $(this);
+        
+        $dialog.find('.modal-body').html('<p>Loading form...</p>');
+        $dialog.find('.modal-footer button.new-booking').html('Create New Booking').prop('disabled', true);
+        $dialog.find('.modal-footer button.delete').html('Delete').prop('disabled', true);
+        $dialog.find('.modal-footer button.save').html('Save').prop('disabled', true);
+      });
+    })(window);

@@ -1,0 +1,22 @@
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      ShopifyApp.ready(function() {
+
+        ShopifyApp.Bar.initialize({ 
+          title: 'Products',
+          breadcrumb: {
+            label: "Home",
+            href: "#{shopify_root_path}",
+            target: 'app',
+            loading: false
+          }
+        });
+      });
+
+
+    })(window);
+
+= render partial: 'shopify/products/table', locals: {products: @products}    

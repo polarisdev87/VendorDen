@@ -1,0 +1,19 @@
+%h2.page-title
+  Products
+
+.row
+  .col-md-12
+    .card
+      .card-body
+        = render partial: 'products_table', locals: {products: @products, exclude_columns: %i[vendor], hide_commands: true}
+    
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      $(function() {
+
+      });
+      
+    })(window);

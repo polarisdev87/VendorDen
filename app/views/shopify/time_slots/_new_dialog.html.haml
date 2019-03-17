@@ -1,0 +1,31 @@
+.modal.fade{'id' => 'new-time-slot-dialog', 'role' => 'dialog', :tabindex => "-1"}
+  .modal-dialog{'role' => 'document'}
+    .modal-content
+      .modal-header
+        %h4.modal-title New TimeSlot
+      .modal-body
+        = render partial: 'shopify/time_slots/new_form', locals: {time_slot: @new_time_slot}
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Cancel
+        %button.btn.btn-primary.save{:type => "button"} Save
+
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      $('#new-time-slot-dialog').on('shown.bs.modal', function (e) {
+        var $dialog = $(this);
+        var $form = $dialog.find('#new-time-slot-form');
+        var $saveButton = $dialog.find('.modal-footer button.save');
+        $saveButton.on('click', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          $form.submit();
+          $saveButton.html('Saving...');
+          $saveButton.attr('disabled', 'disabled');
+        });
+        $form.find('input[name="time_slot[name]"]').focus();
+
+      });
+    })(window);

@@ -1,0 +1,6 @@
+= form_for (@vendor_invite || VendorInvite.new), url: shopify_vendor_invites_path, html: {'id' => 'new-vendor-invite-form'} do |f|
+  .form-group{'class' => "#{f.object.errors[:email].present? ? 'has-error' : ''}"}
+    = f.label :email, 'class' => ''
+    = f.text_field :email, 'class' => 'form-control', 'autofocus' => true
+    - if f.object.errors[:email].present?
+      %span.help-block= f.object.errors[:email].join(', ')

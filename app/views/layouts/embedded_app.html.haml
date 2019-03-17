@@ -1,0 +1,64 @@
+!!!
+%html{'lang' => 'en'}
+  %head
+    %meta{'charset' => 'utf-8'}/
+    %meta{'name' => 'viewport', 'content' => 'width=device-width, initial-scale=1.0'}/
+    %meta{'http-equiv' => 'X-UA-Compatible', 'content' => 'ie=edge'}/
+    - application_name = ShopifyApp.configuration.application_name
+    %title= application_name
+    = csrf_meta_tags
+
+    :plain
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+      
+    = stylesheet_link_tag 'embedded_app'
+    - if content_for?(:extra_css)
+      = yield :extra_css
+    :javascript
+      (function(global) {
+        'use strict';
+
+        global.SHOPIFY_API_KEY = '#{ShopifyApp.configuration.api_key}';
+        global.SHOPIFY_SHOP_ORIGIN = '#{@shop_session.present? ? ("https://" + @shop_session.url) : ""}';
+        global.SHOPIFY_DEBUG = #{Rails.env.development? ? 'true' : 'false'};
+        global.SHOPIFY_FORCE_REDIRECT = true;
+      })(window);
+  %body.embedded-app{'class' => body_class}
+    .app-wrapper.hidden
+      .app-content
+        %main{:role => "main"}
+          = yield
+    .app-loading
+      .text-center
+        %p.loading-text
+          Loading UI...
+    
+    - if content_for?(:extra_html)
+      = yield :extra_html
+
+    %script{:src => "https://cdn.shopify.com/s/assets/external/app.js?#{Time.now.strftime('%Y%m%d%H')}"}
+    
+    = javascript_include_tag 'embedded_app'
+    
+    - if flash.notice.present?
+      :javascript
+        (function() {
+          'use strict';
+          ShopifyApp.flashNotice('#{j(flash.notice.html_safe)}');
+        })();
+    
+    - if flash.alert.present?
+      :javascript
+        (function() {
+          'use strict';
+          ShopifyApp.flashError('#{j(flash.alert.html_safe)}');
+        })();
+    
+    :javascript
+      ShopifyApp.ready(function() {
+        $('body.embedded-app .app-loading').remove();
+        $('body.embedded-app .app-wrapper').removeClass('hidden').show();
+      });   
+    
+    - if content_for?(:extra_javascript)
+      = yield :extra_javascript   

@@ -1,0 +1,125 @@
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      ShopifyApp.ready(function() {
+
+        ShopifyApp.Bar.initialize({ 
+          title: 'New Product',
+          breadcrumb: {
+            label: "Home",
+            href: "#{shopify_root_path(tab: 'products')}",
+            target: 'app',
+            loading: false
+          } 
+        });
+
+        $('#save-product-button').on('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var $button = $(this);
+          $button.html('Saving...');
+          $button.attr('disabled', 'disabled');
+
+          var $form = $('#new-product-form');
+          $form.submit();
+        });
+      });
+
+
+    })(window);
+
+.Polaris-Page
+  .Polaris-Page__Header.Polaris-Page__Header--hasBreadcrumbs.Polaris-Page__Header--hasSecondaryActions.Polaris-Page__Header--hasSeparator
+    .Polaris-Page__MainContent
+
+      .Polaris-Page__TitleAndActions
+        .Polaris-Page__Title
+          %h1.Polaris-DisplayText.Polaris-DisplayText--sizeLarge 
+            New Product
+
+      .Polaris-Page__PrimaryAction
+        .btn-group
+          %button{'type' => 'button', 'class' => 'btn btn-primary', 'id' => 'save-product-button'}
+            Save
+
+  .Polaris-Page__Content
+    .Polaris-Layout
+      .Polaris-Layout__Section
+        .container-fluid
+          = form_for @product, url: shopify_products_path, html: {'id' => 'new-product-form'} do |f|
+            = hidden_field_tag :shopify_product_id, @shopify_product.id
+
+            .form-group{'class' => "#{f.object.errors[:vendor].present? ? 'has-error' : ''}"}
+              = f.label :vendor_id, 'Vendor', 'class' => ''
+              = f.select :vendor_id, current_shop.vendors.all.map { |vendor| [vendor.business_name, vendor.id] }, {}, 'class' => 'form-control', required: true
+              - if f.object.errors[:vendor].present?
+                %span.help-block= f.object.errors[:vendor].join(', ')
+
+
+            .form-group
+              %label
+                Title
+              %p.form-control-static 
+                = f.object.title
+
+
+            .form-group{'class' => "#{f.object.errors[:cost_of_goods].present? ? 'has-error' : ''}"}
+              = f.label :cost_of_goods, 'Cost of Goods', 'class' => ''
+              .input-group
+                = f.number_field :cost_of_goods, 'class' => 'form-control'
+                %span.input-group-addon
+                  USD
+              %span.help-block
+                this value will be the basis of commision splitting among the vendors.
+              - if f.object.errors[:cost_of_goods].present?
+                %span.help-block= f.object.errors[:cost_of_goods].join(', ')
+
+            .checkbox
+              %label
+                = f.check_box :is_bookable
+                Is Bookable?
+              %span.help-block
+                Checking this field will allow a product to have a start and end date booking option.
+
+            #product_timeslots_section.form-group
+              .list-group
+                - if current_shop.time_slots.unbooked.any?
+                  - current_shop.time_slots.unbooked.each do |time_slot|
+                    .list-group-item
+                      = f.check_box :time_slot_ids, { multiple: true }, time_slot.id
+                      = label_tag time_slot.display
+                - else
+                  %p All TimeSlots are already assigned. Create a new timeslot.
+
+            
+            %label= 'Amount that you will keep - the rest goes to the vendor' 
+            .form-group{'class' => "#{f.object.errors[:minimum_commission_per_product].present? ? 'has-error' : ''}"}
+              .row
+                .col-md-2
+                  = f.number_field :minimum_commission_per_product, placeholder: '0', 'class' => 'form-control', 'style' => 'width:100%; text-align: right;', 'required' => 'true'
+                  - if f.object.errors[:minimum_commission_per_product].present?
+                    %span.help-block= f.object.errors[:minimum_commission_per_product].join(', ')
+                .col-md-10
+                  = f.select :commission_structure_type, [['USD per product or time schedule booking', '$'], ['% per product or time schedule booking', '%']], {}, 'class' => 'form-control', 'style' => 'width:100%;'
+
+- content_for :extra_javascript do
+  :javascript
+    (function() {
+      $(function() {
+
+        $('#product_is_bookable').change(function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          var checked = $(this).prop('checked');
+          if (checked) {
+            $('#product_timeslots_section').show();
+          } else {
+            $('#product_timeslots_section').hide();
+          }
+        });
+        $('#product_is_bookable').change();
+      });
+    })();

@@ -1,0 +1,46 @@
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      ShopifyApp.ready(function() {
+
+        ShopifyApp.Bar.initialize({ 
+          title: 'Admin User Setup'
+        });
+
+        $('#save-admin-user-button').on('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var $button = $(this);
+          $button.html('Saving...');
+          $button.attr('disabled', 'disabled');
+
+          var $form = $('#edit-admin-user-form');
+          $form.submit();
+        });
+      });
+
+
+    })(window);
+
+.Polaris-Page
+  .Polaris-Page__Header.Polaris-Page__Header--hasBreadcrumbs.Polaris-Page__Header--hasSecondaryActions.Polaris-Page__Header--hasSeparator
+    .Polaris-Page__MainContent
+
+      .Polaris-Page__TitleAndActions
+        .Polaris-Page__Title
+          %h1.Polaris-DisplayText.Polaris-DisplayText--sizeLarge 
+            Admin User Setup
+
+      .Polaris-Page__PrimaryAction
+        .btn-group
+          %button{'type' => 'button', 'class' => 'btn btn-primary', 'id' => 'save-admin-user-button'}
+            Save
+
+  .Polaris-Page__Content
+    .Polaris-Layout
+      .Polaris-Layout__Section
+        .container-fluid
+          = render partial: 'shopify/admin_user_setups/form', locals: {user: @user, form_url: shopify_admin_user_setup_path, form_html_id: 'edit-admin-user-form'}

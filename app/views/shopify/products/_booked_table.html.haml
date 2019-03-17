@@ -1,0 +1,28 @@
+#shopify-products-table-section
+  - unless shopify_products.present?
+    %p
+      You have no products added yet.
+  - else
+    %table.table.table-hover.table-striped{'id' => 'booked-products-table'}
+      %thead
+        %th Title
+        %th Cost of Goods
+        %th Commission 
+        %th Vendor
+        %th Vendor Inventory
+        %th Is Bookable?
+        %th
+      %tbody
+        - shopify_products.each do |shopify_product|
+          %tr{'data-id' => shopify_product.product.id}
+            %td= shopify_product.title
+            %td= "#{shopify_product.product.cost_of_goods} USD"
+            %td= shopify_product.product.commision_display
+            %td= shopify_product.product.vendor.business_name
+            %td= shopify_product.product.inventory_quantity
+            %td= shopify_product.product.is_bookable? ? 'yes' : 'no'
+            %td
+              .commands
+                = link_to 'Edit', edit_shopify_product_path(shopify_product.product)
+                |
+                = link_to 'Remove', shopify_product_path(shopify_product.product, format: :js), remote: true, method: :delete, data: {confirm: 'Are you sure you want to remove this product from Added?'}

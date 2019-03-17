@@ -1,0 +1,23 @@
+.launchpeer-booking-form
+  .product-form__item
+    %label{'for' => 'launchpeer-booking-form__properties-from'}
+      From
+    .product-form__input
+      - if product.time_slots.present?
+        - start_at = product.time_slots.first.start_at
+        %input{'type' => 'date', 'name' => 'properties[from_date]', 'id' => 'launchpeer-booking-form__properties-from', 'value' => start_at.strftime('%Y-%m-%d')}
+        %input{'type' => 'time', 'name' => 'properties[from_time]', 'value' => start_at.strftime('%H:%M')}
+      - else 
+        %input{'type' => 'date', 'name' => 'properties[from_date]', 'id' => 'launchpeer-booking-form__properties-from'}
+        %input{'type' => 'time', 'name' => 'properties[from_time]'}
+  .product-form__item
+    %label{'for' => 'launchpeer-booking-form__properties-to'}
+      To
+    .product-form__input
+      - if product.time_slots.present?
+        - end_at = product.time_slots.first.end_at
+        %input{'type' => 'date', 'name' => 'properties[to_date]', 'id' => 'launchpeer-booking-form__properties-to', 'value' => end_at.strftime('%Y-%m-%d')}
+        %input{'type' => 'time', 'name' => 'properties[to_time]', 'value' => end_at.strftime('%H:%M')}
+      - else
+        %input{'type' => 'date', 'name' => 'properties[to_date]', 'id' => 'launchpeer-booking-form__properties-to'}
+        %input{'type' => 'time', 'name' => 'properties[to_time]'}

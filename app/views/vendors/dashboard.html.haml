@@ -1,0 +1,168 @@
+%h2.page-title
+  Dashboard
+
+
+.row.mt-4
+  .col-md-4
+    .card.card-cascade.narrower
+      .view.view-cascade.gradient-card-header.brown.lighten-2
+        .card-header-title
+          Unfulfilled Orders
+      .card-body.card-body-cascade.text-center
+        .strong.h1
+          = "#{@unfulfilled_orders_count}"
+
+  .col-md-4
+    .card.card-cascade.narrower
+      .view.view-cascade.gradient-card-header.brown.lighten-2
+        .card-header-title
+          Order Count
+      .card-body.card-body-cascade.text-center
+        .strong.h1
+          = "#{@orders_count}"
+
+  .col-md-4
+    .card.card-cascade.narrower
+      .view.view-cascade.gradient-card-header.brown.lighten-2
+        .card-header-title
+          Product Count
+      .card-body.card-body-cascade.text-center
+        .strong.h1
+          = "#{@products_count}"
+
+.row.mt-4
+  .col-md-4
+    .card.card-cascade.narrower
+      .view.view-cascade.gradient-card-header.brown.lighten-2
+        .card-header-title
+          Number of Payouts Paid
+      .card-body.card-body-cascade.text-center
+        .strong.h1
+          = "#{@payouts_paid} USD"
+
+  .col-md-4
+    .card.card-cascade.narrower
+      .view.view-cascade.gradient-card-header.brown.lighten-2
+        .card-header-title
+          Payouts Received
+      .card-body.card-body-cascade.text-center
+        .strong.h1
+          = "#{@payouts_receivable} USD"
+
+  .col-md-4
+    .card.card-cascade.narrower
+      .view.view-cascade.gradient-card-header.brown.lighten-2
+        .card-header-title
+          Total Payouts Paid To Date
+      .card-body.card-body-cascade.text-center
+        .strong.h1
+          = "#{@total_payouts} USD"
+
+.row.mt-4
+  .col-md-12
+    .card.card-cascade.narrower
+      .view.view-cascade.gradient-card-header.brown.lighten-2
+        .card-header-title
+          Total Revenue
+      .card-body.card-body-cascade.text-center
+        %canvas{'id' => 'sales-revenue-chart-canvas', 'width' => '100%'}
+  
+.row.mt-4
+  .col-md-12
+    .card.card-cascade.narrower
+      .view.view-cascade.gradient-card-header.brown.lighten-2
+        .card-header-title
+          Unpaid Commision Payouts
+      .card-body.card-body-cascade.text-center
+        - if @unpaid_payouts.present?
+          %table.table.table-hover.table-striped{'id' => 'payouts-table'}
+            %thead
+              %th ID
+              %th Product
+              %th $ Sold
+              %th $ Shop Commision
+              %th $ My Commision
+              %th Status
+            %tbody
+              - @unpaid_payouts.each do |payout|
+                %tr{'data-id' => payout.id}
+                  %td= payout.id
+                  %td= (payout.product.title rescue '--removed--')
+                  %td= payout.amount_sold
+                  %td= payout.amount_commissions_earned
+                  %td= payout.amount_to_be_paid_out
+                  %td= payout.status.humanize
+                  %td
+                    - unless payout.is_unpaid?
+                      = payout.payment_type.humanize
+        - else
+          %p Currently there are no unpaid payouts
+  
+.row.mt-4
+  .col-md-12
+    .card.card-cascade.narrower
+      .view.view-cascade.gradient-card-header.brown.lighten-2
+        .card-header-title
+          Products
+      .card-body.card-body-cascade.text-center
+        - if @products.present?
+          %table.table.table-hover.table-striped{'id' => 'products-table'}
+            %thead
+              %th ID
+              %th Title
+              %th Cost of Goods
+              %th Commission
+            - @products.each do |product|
+              %tr{'data-id' => product.id}
+                %td= product.id
+                %td= product.title
+                %td= "#{ActionController::Base.helpers.number_to_currency(product.cost_of_goods)} USD"
+                %td= product.commision_display
+        - else
+          %p 
+            No products currently
+
+
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      var ctx = document.getElementById("sales-revenue-chart-canvas").getContext("2d");
+      var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: [#{@payouts_report_data.map { |d| "'#{j(truncate(d['product_title'], length: 20))}'" }.join(', ').html_safe}],
+              datasets: [{
+                  label: '#{@payouts_report_title} Revenues',
+                  data: [#{@payouts_report_data.map { |d| d['product_paid_out'] }.join(', ')}],
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255,99,132,1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero:true
+                      }
+                  }]
+              }
+          }
+      });
+    })(window);

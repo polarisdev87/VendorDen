@@ -1,0 +1,35 @@
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      ShopifyApp.ready(function() {
+
+        ShopifyApp.Bar.initialize({ 
+          title: 'Payment Setup'
+        });
+      });
+
+
+    })(window);
+
+.Polaris-Page
+  .Polaris-Page__Header.Polaris-Page__Header--hasBreadcrumbs.Polaris-Page__Header--hasSecondaryActions.Polaris-Page__Header--hasSeparator
+    .Polaris-Page__MainContent
+
+      .Polaris-Page__TitleAndActions
+        .Polaris-Page__Title
+          %h1.Polaris-DisplayText.Polaris-DisplayText--sizeLarge 
+            Payment Setup
+
+      .Polaris-Page__PrimaryAction
+
+
+  .Polaris-Page__Content
+    .Polaris-Layout
+      .Polaris-Layout__Section
+        .container-fluid
+          .text-center
+            %p 
+              Creative Den LLC uses Stripe to get you paid quickly and keep your personal and payment information secure. Thousands of companies around the world trust Stripe to process payments for their users. Set up a Stripe account to get paid with VendorDen
+            %p= connect_admin_with_stripe_button

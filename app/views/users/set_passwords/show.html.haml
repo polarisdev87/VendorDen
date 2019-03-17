@@ -1,0 +1,21 @@
+%h2.page-header
+  Set Password 
+  %small
+    Vendor Registration Wizard 1 of 3
+
+= form_for (current_user), url: users_set_password_path do |f|
+  
+  .form-group{'class' => "#{f.object.errors[:password].present? ? 'has-error' : ''}"}
+    = f.label :password, 'class' => ''
+    = f.password_field :password, 'class' => 'form-control', 'autofocus' => true
+    - if f.object.errors[:password].present?
+      %span.help-block= f.object.errors[:password].join(', ')
+  
+  .form-group{'class' => "#{f.object.errors[:password_confirmation].present? ? 'has-error' : ''}"}
+    = f.label :password_confirmation, 'class' => ''
+    = f.password_field :password_confirmation, 'class' => 'form-control', 'autofocus' => true
+    - if f.object.errors[:password_confirmation].present?
+      %span.help-block= f.object.errors[:password_confirmation].join(', ')
+
+  .form-commands
+    = f.submit 'Save', 'class' => 'btn btn-primary btn-lg'

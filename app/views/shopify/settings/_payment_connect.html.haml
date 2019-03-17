@@ -1,0 +1,5 @@
+- if current_shop.setting.has_stripe_account?
+  %p 
+    You are already connected to Stripe
+- else
+  = connect_admin_with_stripe_button

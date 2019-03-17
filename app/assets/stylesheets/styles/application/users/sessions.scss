@@ -1,0 +1,93 @@
+html[data-login] {
+  height: 100%;
+}
+
+@media (max-width: 740px) {
+  html[data-login] {
+    height: 1000px;
+  }
+}
+@media (min-width: 800px) and (max-width: 850px) {
+  html[data-login] {
+    height: 600px;
+  }
+}
+
+body.login {
+
+  .navbar-brand {
+    img {
+      height: 60px;
+    }
+  }
+  
+  &,
+  header,
+  .view {
+    height: 100%;
+  }
+
+  @media (max-width: 740px) {
+    &,
+    header,
+    .view {
+      height: 1000px;
+    }
+  }
+  @media (min-width: 800px) and (max-width: 850px) {
+    &,
+    header,
+    .view {
+      height: 600px;
+    }
+  }
+
+  .login-card .card-header {
+    background-color: rgba(146, 111, 73, 0.98) !important;
+
+    h3 {
+      display: inline-block;
+      color: #FFF;
+      margin-left: 6rem;
+    }
+
+    img {
+      display: inline-block;
+      height: 60px;
+    }
+  }
+
+  .btn .fa {
+    margin-left: 3px;
+  }
+
+  .top-nav-collapse {
+    background-color: rgba(146, 111, 73, 0.98) !important;
+  }
+
+  .navbar:not(.top-nav-collapse) {
+    background: transparent !important;
+  }
+
+  @media (max-width: 991px) {
+    .navbar:not(.top-nav-collapse) {
+      background: #47392a !important;
+    }
+  }
+
+  .btn-white {
+    color: black !important;
+  }
+
+  h6 {
+    line-height: 1.7;
+  }
+
+  .rgba-gradient {
+    background: -moz-linear-gradient(45deg, rgba(32,26,22,.7), rgba(166, 140, 23, 0.7) 100%);
+    background: -webkit-linear-gradient(45deg, rgba(32,26,22,.7), rgba(166, 140, 23, 0.7) 100%);
+    background: -webkit-gradient(linear, 45deg, from(rgba(32,26,22,.7)), to(rgba(166, 140, 23, 0.7)));
+    background: -o-linear-gradient(45deg, rgba(32,26,22,.7), rgba(166, 140, 23, 0.7) 100%);
+    background: linear-gradient(to 45deg, rgba(32,26,22,.7), rgba(166, 140, 23, 0.7) 100%);
+  }
+}

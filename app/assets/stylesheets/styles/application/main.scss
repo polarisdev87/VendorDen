@@ -1,0 +1,37 @@
+body.application {
+  
+  .side-nav {
+
+    .logo-wrapper {
+      height: 60px;
+      
+      a {
+        padding: 0;
+        margin: 0;
+        color: #FFF;
+
+        .app-name {
+          font-weight: bold;
+          display: inline-block;
+        }
+
+        img {
+          display: inline-block;
+          height: 40px;
+          padding: 0;
+          margin: 0;
+          margin-left: 20px;
+          margin-right: 10px;
+        }
+      }
+    }
+  } 
+
+  main {
+    padding-bottom: 100px;
+
+    .page-title {
+      color: #9E9E9E;
+    }
+  } 
+}

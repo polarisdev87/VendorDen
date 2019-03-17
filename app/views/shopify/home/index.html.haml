@@ -1,0 +1,222 @@
+- content_for(:extra_javascript) do
+  :javascript
+    (function() {
+      'use strict';
+
+      ShopifyApp.ready(function() {
+        
+        ShopifyApp.Bar.initialize({
+          title: 'Dashboard'
+        });
+
+        $('#dashboard-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+          var $newTab = $(e.target);
+          
+          $('.tab-btn-groups .btn-group').addClass('hidden');
+          $($newTab.attr('href').replace('-pane', '-btn-group')).removeClass('hidden');
+
+          if ($newTab.attr('href') == '#calendar-tab-pane') {
+            setTimeout(function() {
+              $('#slot-calendar').fullCalendar('render');
+              setTimeout(function() {
+                $('#slot-calendar').fullCalendar('changeView', 'month');
+                $('#slot-calendar').fullCalendar('changeView', 'agendaWeek');
+              }, 100);
+            }, 100);
+          }
+        });
+
+        $('#slot-calendar').fullCalendar({
+          header: {
+            right:  'today month,agendaWeek,listWeek,basicWeek prev,next'
+          },
+          slotEventOverlap: false,
+          defaultView: 'agendaWeek',
+          eventSources: [
+            {
+              url: '#{shopify_time_slots_path(format: :json)}',
+              color: '#999999',
+              textColor: 'black' 
+            },
+            {
+              url: '#{shopify_bookings_path(format: :json)}',
+              color: '#76ff03',
+              textColor: '#000' 
+            }
+          ],
+          eventClick: function(calEvent, jsEvent, view) {
+            if (calEvent.className == 'booking') {
+              var url = calEvent.order_status_url;
+              window.open(url);
+            } else {
+              var $editDialog = $('#edit-time-slot-dialog');
+              $editDialog.data('calEvent', calEvent);
+              $editDialog.modal({
+
+              });
+            }
+          },
+          eventMouseover: function(calEvent, jsEvent, view) {
+            if (calEvent.className == 'booking') {
+              $(this).css({
+                'background-color': '#005005',
+                'color': '#CCC'
+              });
+            } else {
+              $(this).css({
+                'background-color': '#333',
+                'color': '#CCC'
+              });
+            }
+          },
+          eventMouseout: function(calEvent, jsEvent, view) {
+            if (calEvent.className == 'booking') {
+              $(this).css({
+                'background-color': '#76ff03',
+                'color': '#000'
+              });
+            } else {
+              $(this).css({
+                'background-color': '#999',
+                'color': '#000'
+              });
+            }
+          }
+        });
+
+        $('#save-setting-form-button').on('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var $btn = $(e.target);
+          $btn.prop('disabled', true);
+          $btn.html('Saving...');
+
+          $('#setting-form').submit();
+        });
+
+        $('#new-product-command').on('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          ShopifyApp.redirect("/admin/products/new");
+        });
+      });
+    })();
+
+.Polaris-Page
+  .Polaris-Page__Header.Polaris-Page__Header--hasBreadcrumbs.Polaris-Page__Header--hasSecondaryActions.Polaris-Page__Header--hasSeparator
+    .Polaris-Page__MainContent
+      
+      .Polaris-Page__TitleAndActions
+        .Polaris-Page__Title
+          %h1.Polaris-DisplayText.Polaris-DisplayText--sizeLarge 
+            Creative Den Dashboard
+      
+      .Polaris-Page__PrimaryAction
+        .tab-btn-groups
+
+          .btn-group#dashboard-tab-btn-group{'class' => shopify_home_tab_active_class(:dashboard, inactive: 'hidden')}
+            %button{'type' => 'button', 'class' => 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#invite-vendor-dialog'}
+              Invite a Vendor
+
+          
+          .btn-group#calendar-tab-btn-group{'class' => shopify_home_tab_active_class(:calendar, inactive: 'hidden')}
+            %button{'type' => 'button', 'class' => 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#new-time-slot-dialog'}
+              Create New TimeSlot
+
+          .btn-group#vendor-invites-tab-btn-group{'class' => shopify_home_tab_active_class(:vendor_invites, inactive: 'hidden')}
+            %button{'type' => 'button', 'class' => 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#invite-vendor-dialog'}
+              Invite a Vendor
+
+          .btn-group#vendors-tab-btn-group{'class' => shopify_home_tab_active_class(:vendors, inactive: 'hidden')}
+            %a{'class' => 'btn btn-primary', 'href' => '#new-vendor-dialog', 'data-toggle' => 'modal', 'data-target' => '#new-vendor-dialog'}
+              Create New Vendor
+            %button{'type' => 'button', 'class' => 'btn btn-primary dropdown-toggle', 'data-toggle' => 'dropdown', 'aria-haspopup' => 'true', 'aria-expanded' => 'false'}           
+              %span.caret
+              %span.sr-only
+                More Actions
+            %ul.dropdown-menu
+              %li
+                %a{'href' => '#invite-vendor-dialog', 'data-toggle' => 'modal', 'data-target' => '#invite-vendor-dialog'}
+                  Invite a Vendor
+
+          - if current_shop.vendors.any?
+            .btn-group#products-tab-btn-group{'class' => shopify_home_tab_active_class(:products, inactive: 'hidden')}
+              -# %button{'type' => 'button', 'class' => 'btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#new-product-dialog'}
+              -#   Create New Product
+              %button{'type' => 'button', 'class' => 'btn btn-primary', 'id' => 'new-product-command'}
+                Create New Product or Class
+
+          .btn-group#settings-tab-btn-group{'class' => shopify_home_tab_active_class(:settings, inactive: 'hidden')}
+            %button{'type' => 'button', 'class' => 'btn btn-primary', id: 'save-setting-form-button'}
+              Save
+
+  .Polaris-Page__Content
+    .Polaris-Layout
+      .Polaris-Layout__Section
+        .container-fluid
+          
+          %ul.nav.nav-tabs{'role' => 'tablist', 'id' => 'dashboard-tabs'}
+            %li{'role' => 'presentation', 'class' => shopify_home_tab_active_class(:dashboard)}
+              %a{'href' => '#dashboard-tab-pane', 'aria-controls' => 'classes', 'role' => 'tab', 'data-toggle' => 'tab'}
+                Dashboard
+
+            %li{'role' => 'presentation', 'class' => shopify_home_tab_active_class(:calendar)}
+              %a{'href' => '#calendar-tab-pane', 'aria-controls' => 'calendar', 'role' => 'tab', 'data-toggle' => 'tab'}
+                Calendar
+
+            %li{'role' => 'presentation', 'class' => shopify_home_tab_active_class(:vendor_invites)}
+              %a{'href' => '#vendor-invites-tab-pane', 'aria-controls' => 'vendor-invites', 'role' => 'tab', 'data-toggle' => 'tab'}
+                Vendor Invites
+
+            %li{'role' => 'presentation', 'class' => shopify_home_tab_active_class(:vendors)}
+              %a{'href' => '#vendors-tab-pane', 'aria-controls' => 'vendors', 'role' => 'tab', 'data-toggle' => 'tab'}
+                Vendors
+            
+            - if current_shop.vendors.any?
+              %li{'role' => 'presentation', 'class' => shopify_home_tab_active_class(:products)}
+                %a{'href' => '#products-tab-pane', 'aria-controls' => 'products', 'role' => 'tab', 'data-toggle' => 'tab'}
+                  Product or Class
+
+            %li{'role' => 'presentation', 'class' => shopify_home_tab_active_class(:settings)}
+              %a{'href' => '#settings-tab-pane', 'aria-controls' => 'settings', 'role' => 'tab', 'data-toggle' => 'tab'}
+                Settings
+          
+          .tab-content
+            
+            .tab-pane{'id' => 'dashboard-tab-pane', 'role' => 'tabpanel', 'class' => shopify_home_tab_active_class(:dashboard)}
+              = render partial: 'shopify/home/dashboard'
+            
+            .tab-pane{'id' => 'calendar-tab-pane', 'role' => 'tabpanel', 'class' => shopify_home_tab_active_class(:calendar)}
+              #slot-calendar
+            
+            .tab-pane{'id' => 'vendor-invites-tab-pane', 'role' => 'tabpanel', 'class' => shopify_home_tab_active_class(:vendor_invites)}
+              = render partial: 'shopify/vendor_invites/table', locals: {vendor_invites: @vendor_invites}
+            
+            .tab-pane{'id' => 'vendors-tab-pane', 'role' => 'tabpanel', 'class' => shopify_home_tab_active_class(:vendors)}
+              = render partial: 'shopify/vendors/table', locals: {vendors: @vendors}
+
+            - if current_shop.vendors.any?
+              .tab-pane{'id' => 'products-tab-pane', 'role' => 'tabpanel', 'class' => shopify_home_tab_active_class(:products)}
+                .panel
+                  .panel-heading
+                    %h4 Not Added
+                  .panel-body
+                    = render partial: 'shopify/products/unbooked_table', locals: {shopify_products: @unbooked_shopify_products}
+                    .panel
+                  .panel-heading
+                    %h4 Added
+                  .panel-body
+                    = render partial: 'shopify/products/booked_table', locals: {shopify_products: @booked_shopify_products}
+            
+            .tab-pane{'id' => 'settings-tab-pane', 'role' => 'tabpanel', 'class' => shopify_home_tab_active_class(:settings)}
+              = render partial: 'shopify/settings/index' 
+              
+
+- content_for(:extra_html) do 
+  = render partial: 'shopify/time_slots/new_dialog' 
+  = render partial: 'shopify/time_slots/edit_dialog' 
+  = render partial: 'shopify/vendor_invites/new_dialog' 
+  - if current_shop.vendors.any?
+    = render partial: 'shopify/products/new_dialog'    

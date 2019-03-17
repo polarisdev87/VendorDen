@@ -1,0 +1,176 @@
+.row
+  .col-md-6
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Sales Total
+      .panel-body
+        .text-center
+          .strong.h1
+            = "#{@sales_total} USD"
+
+  .col-md-6
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Commission Total
+      .panel-body
+        .text-center
+          .strong.h1
+            = "#{@commission_total} USD"
+
+.row
+  .col-md-4
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Unpaid Payouts
+      .panel-body
+        .text-center
+          .strong.h1
+            = "#{@payouts_unpaid} USD"
+
+  .col-md-4
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Paid Payouts
+      .panel-body
+        .text-center
+          .strong.h1
+            = "#{@payouts_paid} USD"
+      
+  .col-md-4
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Total Payouts
+      .panel-body
+        .text-center
+          .strong.h1
+            = "#{@payouts_total} USD"
+
+
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Product Sales
+      .panel-body
+        %canvas{'id' => 'product-sales-chart-canvas', 'width' => '100%'}
+
+
+.row
+  .col-md-12
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Product Commissions Earned
+      .panel-body
+        %canvas{'id' => 'product-commissions-earned-chart-canvas', 'width' => '100%'}
+
+
+.row
+  .col-md-12  
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Commision Payouts
+      .panel-body
+        = render partial: 'shopify/home/payouts_table'
+.row
+  .col-md-12  
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title
+          Active Vendors
+      .panel-body
+        = render partial: 'shopify/home/active_vendors_table'
+
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      var ctx = document.getElementById("product-sales-chart-canvas").getContext("2d");
+      var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: [#{@product_sales_report_data.map { |d| "'#{j(truncate(d['product_title'], length: 20))}'" }.join(', ').html_safe}],
+              datasets: [{
+                  label: '#{@product_sales_title}',
+                  data: [#{@product_sales_report_data.map { |d| d['product_amount_sold'] }.join(', ')}],
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255,99,132,1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero:true
+                      }
+                  }]
+              }
+          }
+      });
+    })(window);
+
+  :javascript
+    (function(global) {
+      'use strict';
+
+      var ctx = document.getElementById("product-commissions-earned-chart-canvas").getContext("2d");
+      var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: [#{@product_commissions_earned_report_data.map { |d| "'#{j(truncate(d['product_title'], length: 20))}'" }.join(', ').html_safe}],
+              datasets: [{
+                  label: '#{@product_commissions_earned_title}',
+                  data: [#{@product_commissions_earned_report_data.map { |d| d['product_amount_commissions_earned'] }.join(', ')}],
+                  backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)'
+                  ],
+                  borderColor: [
+                      'rgba(255,99,132,1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                  ],
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero:true
+                      }
+                  }]
+              }
+          }
+      });
+    })(window);

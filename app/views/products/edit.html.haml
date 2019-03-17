@@ -1,0 +1,40 @@
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+        $('#save-product-button').on('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var $button = $(this);
+          $button.html('Saving...');
+          $button.attr('disabled', 'disabled');
+
+          var $form = $('#edit-product-form');
+          $form.submit();
+        });
+      
+    })(window);
+
+- content_for(:extra_page_title, current_vendor.business_name)
+
+.Polaris-Page
+  .Polaris-Page__Header.Polaris-Page__Header--hasBreadcrumbs.Polaris-Page__Header--hasSecondaryActions.Polaris-Page__Header--hasSeparator
+    .Polaris-Page__MainContent
+
+      .Polaris-Page__TitleAndActions
+        .Polaris-Page__Title
+          %h1.Polaris-DisplayText.Polaris-DisplayText--sizeLarge 
+            Edit Product
+
+      .Polaris-Page__Content
+        .Polaris-Layout
+          .Polaris-Layout__Section
+            .container-fluid
+              = render partial: 'products/form', locals: {product: @product, form_url: product_update_path(:id => [@product.id], :product_id => [@product.id]), form_html_id: 'edit-product-form'}
+
+      .Polaris-Page__PrimaryAction
+        .btn-group
+          %button{'type' => 'button', 'class' => 'btn btn-primary', 'id' => 'save-product-button'}
+            Save

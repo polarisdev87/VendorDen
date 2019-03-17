@@ -1,0 +1,34 @@
+#vendor-invites-table-section
+  - unless vendor_invites.present?
+    %p
+      You have not invited a vendor yet. #{link_to('Click here to invite', new_shopify_vendor_invite_path)}.
+  - else
+    %table.table.table-hover.table-striped{'id' => 'vendor-invites-table'}
+      %thead
+        %th Id
+        %th Email
+        %th Sent At
+        %th Accepted At
+        %th Status
+        %th Actions
+      %tbody
+        - vendor_invites.each do |vendor_invite|
+          %tr{'data-id' => vendor_invite.id}
+            %td= vendor_invite.id
+            
+            %td= vendor_invite.email
+            
+            %td{title: "#{time_ago_in_words(vendor_invite.created_at)} ago"}
+              = vendor_invite.created_at.strftime('%b %-d, %Y %I:%M %p')
+            
+            - if vendor_invite.accepted_at.present?
+              %td{title: "#{time_ago_in_words(vendor_invite.accepted_at)} ago"}
+                = vendor_invite.accepted_at.strftime('%b %-d, %Y %I:%M %p')
+            - else
+              %td.text-center= '-'
+            
+            %td= vendor_invite.status.humanize
+            
+            %td
+              - if vendor_invite.can_cancel?
+                = link_to 'Cancel', cancel_shopify_vendor_invite_path(vendor_invite), method: :delete, remote: true, 'data-confirm' => 'Are you sure you want to cancel this invite?'

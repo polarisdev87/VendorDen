@@ -1,0 +1,39 @@
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      ShopifyApp.ready(function() {
+
+        ShopifyApp.Bar.initialize({ 
+          title: 'Vendor Invites',
+          breadcrumb: {
+            label: "Home",
+            href: "#{shopify_root_path}",
+            target: 'app',
+            loading: false
+          }
+        });
+      });
+
+
+    })(window);
+
+.Polaris-Page
+  .Polaris-Page__Header.Polaris-Page__Header--hasBreadcrumbs.Polaris-Page__Header--hasSecondaryActions.Polaris-Page__Header--hasSeparator
+    .Polaris-Page__MainContent
+      
+      .Polaris-Page__TitleAndActions
+        .Polaris-Page__Title
+          %h1.Polaris-DisplayText.Polaris-DisplayText--sizeLarge 
+            Vendor Invites
+      
+      .Polaris-Page__PrimaryAction
+        .btn-group
+          = link_to 'Invite Vendor', new_shopify_vendor_invite_path, 'class' => 'btn btn-primary'
+
+  .Polaris-Page__Content
+    .Polaris-Layout
+      .Polaris-Layout__Section
+        .container-fluid
+          = render partial: 'shopify/vendor_invites/table', locals: {vendor_invites: @vendor_invites}

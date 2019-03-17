@@ -1,0 +1,18 @@
+#shopify-products-table-section
+  - unless shopify_products.present?
+    %p
+      No products to add.
+  - else
+    %table.table.table-hover.table-striped{'id' => 'unbooked-products-table'}
+      %thead
+        %th Title
+        %th Vendor
+        %th 
+      %tbody
+        - shopify_products.each do |shopify_product|
+          %tr{'data-id' => shopify_product.id}
+            %td= shopify_product.title
+            %td= shopify_product.vendor
+            %td
+              .commands
+                = link_to 'Add', new_shopify_product_path(shopify_product_id: shopify_product.id)

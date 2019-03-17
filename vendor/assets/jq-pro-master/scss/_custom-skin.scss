@@ -1,0 +1,23 @@
+// Your custom skin
+$skins: () !default;
+$skins: map-merge((
+  "cd-shopify": (
+    "skin-primary-color":      #47392a,
+    "skin-navbar":             #36291b,
+    "skin-footer-color":       #44474b,
+    "skin-accent":             #75c1f0,
+    "skin-flat":               #a5a4a4,
+    "skin-sidenav-item":       rgba(0,   0,   0,   .4),
+    "skin-sidenav-item-hover": rgba(0,   0,   0,   .4),
+    "skin-gradient-start":     #383838,
+    "skin-gradient-end":       #a5a4a4,
+    "skin-mask-slight":        rgba(121, 121, 121, .5),
+    "skin-mask-light":         rgba(121, 121, 121, .65),
+    "skin-mask-strong":        rgba(121, 121, 121, .8),
+    "skin-sn-child":           #afdffc,
+    "skin-btn-primary":        #47392a,
+    "skin-btn-secondary":      #7d8488,
+    "skin-btn-default":        #353637,
+    "skin-text":               $white
+  )
+), $skins);

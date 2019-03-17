@@ -1,0 +1,186 @@
+// Cards extended
+.card {
+  &.promoting-card {
+    .fa {
+      transition: .4s;
+      &[class*="fa-"] {
+        &:hover {
+          transition: .4s;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  &.weather-card {
+    .collapse-content {
+      a {
+        &.collapsed {
+          &:after {
+            content: 'Expand';
+          }
+        }
+        &:not(.collapsed) {
+          &:after {
+            content: 'Collapse';
+          }
+        }
+      }
+    }
+    .degree {
+      &:after {
+        content: "°C";
+        position: absolute;
+        font-size: 3rem;
+        margin-top: .9rem;
+        font-weight: 400;
+      }
+    }
+  }
+  &.gradient-card {
+    transition: all .5s ease-in-out;
+    .first-content {
+      .card-title {
+        font-weight: 500;
+      }
+    }
+    .second-content {
+      display: none;
+    }
+    .third-content {
+      display: none;
+    }
+    .card-body {
+      transition: all .5s ease-in-out;
+      opacity: 0;
+      visibility: hidden;
+      overflow: hidden;
+      height: 0;
+      padding-bottom: 0;
+      padding-top: 0;
+    }
+    .card-image {
+      border-radius: .25rem;
+      .mask {
+        border-radius: .25rem;
+      }
+    }
+    &:focus-within {
+      margin-top: 3rem;
+      transition: all .5s ease-in-out;
+      .card-image {
+        transition: all .5s ease-in-out;
+        width: 7rem;
+        height: 7rem;
+        margin-top: -2rem;
+        margin-left: 1rem;
+        border-radius: .25rem;
+        margin-bottom: 2rem;
+        @extend .z-depth-1;
+        .mask {
+          border-radius: .25rem;
+        }
+      }
+      .card-body {
+        transition: all .7s ease-in-out;
+        visibility: visible;
+        opacity: 1;
+        overflow: visible;
+        padding-bottom: 1.25rem;
+        padding-top: 1.25rem;
+        height: auto;
+        border-radius: .25rem;
+        .progress {
+          height: .4rem;
+          .progress-bar {
+            height: .4rem;
+          }
+        }
+      }
+      .first-content {
+        display: none;
+      }
+      .second-content {
+        display: block;
+      }
+      .third-content {
+        display: block;
+        margin-top: -6rem;
+      }
+    }
+    @media (max-device-width: 1025px) {
+      &:hover {
+        margin-top: 3rem;
+        transition: all .5s ease-in-out;
+        .card-image {
+          transition: all .5s ease-in-out;
+          width: 7rem;
+          height: 7rem;
+          margin-top: -2rem;
+          margin-left: 1rem;
+          border-radius: .25rem;
+          margin-bottom: 2rem;
+          box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+          .mask {
+            border-radius: .25rem;
+          }
+        }
+        .card-body {
+          transition: all .7s ease-in-out;
+          visibility: visible;
+          opacity: 1;
+          overflow: visible;
+          padding-bottom: 1.25rem;
+          padding-top: 1.25rem;
+          height: auto;
+          border-radius: .25rem;
+          .progress {
+            height: .4rem;
+            .progress-bar {
+              height: .4rem;
+            }
+          }
+        }
+        .first-content {
+          display: none;
+        }
+        .second-content {
+          display: block;
+        }
+        .third-content {
+          display: block;
+          margin-top: -6rem;
+        }
+      }
+    }
+  }
+  &.booking-card {
+    .rating {
+      font-size: .7rem;
+    }
+  }
+  &.chart-card {
+    .classic-tabs {
+      .nav {
+        li {
+          a {
+            &.active {
+              border-bottom: 2px solid;
+              transition: width .5s ease, background-color .5s ease;
+            }
+          }
+        }
+        &.tabs-white {
+          li {
+            a {
+              color: $grey-darken-1;
+              font-weight: 500;
+              &.active {
+                color: $deep-purple-base;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

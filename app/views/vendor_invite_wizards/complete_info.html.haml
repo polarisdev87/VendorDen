@@ -1,0 +1,81 @@
+%h2.page-title
+  Vendor Invite Registration Wizard
+
+.row.mt-4
+  .col-md-12
+    .card
+      .card-body
+        %ul.stepper.stepper-horizontal
+          %li.completed
+            %a
+              %span.circle
+                %i.fa.fas.fa-lock
+              %span.label
+                Set Password
+          %li.active
+            %a
+              %span.circle
+                %i.fa.fas.fa-info
+              %span.label
+                Complete Info
+          %li
+            %a
+              %span.circle
+                %i.fa.fas.fa-credit-card
+              %span.label
+                Payment Info
+          %li
+            %a
+              %span.circle
+                %i.fa.fas.fa-check
+              %span.label
+                Complete
+
+        = form_for @vendor, url: complete_info_vendor_invite_wizard_path || shopify_vendors_path, html: {'id' => 'new-vendor-form'} do |f|
+
+          .form-row
+            .col-md-12.mb-3
+              = f.label :business_name
+              = f.text_field :business_name, 'class' => "form-control #{f.object.errors[:business_name].present? ? 'is-invalid' : ''}", 'autofocus' => true
+              - if f.object.errors[:business_name].present?
+                .invalid-feedback{'style' => 'display: block;'}
+                  = f.object.errors[:business_name].join(', ')
+            .col-md-12.mb-3
+              = f.label :poc_first_name, 'First name'
+              = f.text_field :poc_first_name, 'class' => "form-control #{f.object.errors[:poc_first_name].present? ? 'is-invalid' : ''}"
+              - if f.object.errors[:poc_first_name].present?
+                .invalid-feedback{'style' => 'display: block;'}
+                  = f.object.errors[:poc_first_name].join(', ')
+            .col-md-12.mb-3
+              = f.label :poc_last_name, 'Last name'
+              = f.text_field :poc_last_name, 'class' => "form-control #{f.object.errors[:poc_last_name].present? ? 'is-invalid' : ''}"
+              - if f.object.errors[:poc_last_name].present?
+                .invalid-feedback{'style' => 'display: block;'}
+                  = f.object.errors[:poc_last_name].join(', ')
+            .col-md-12.mb-3
+              = f.label :phone_number, 'Phone'
+              = f.text_field :phone_number, 'class' => "form-control #{f.object.errors[:phone_number].present? ? 'is-invalid' : ''}"
+              - if f.object.errors[:phone_number].present?
+                .invalid-feedback{'style' => 'display: block;'}
+                  = f.object.errors[:phone_number].join(', ')
+            .col-md-12.mb-3
+              = f.label :email
+              = f.text_field :email, 'class' => "form-control #{f.object.errors[:email].present? ? 'is-invalid' : ''}", readonly: true
+              - if f.object.errors[:email].present?
+                .invalid-feedback{'style' => 'display: block;'}
+                  = f.object.errors[:email].join(', ')
+            .col-md-12.mb-3
+              = f.label :tax_id
+              = f.text_field :tax_id, 'class' => "form-control #{f.object.errors[:tax_id].present? ? 'is-invalid' : ''}"
+              - if f.object.errors[:tax_id].present?
+                .invalid-feedback{'style' => 'display: block;'}
+                  = f.object.errors[:tax_id].join(', ')
+            .col-md-12.mb-3
+              = f.label :address
+              = f.text_area :address, 'class' => "form-control #{f.object.errors[:address].present? ? 'is-invalid' : ''}"
+              - if f.object.errors[:address].present?
+                .invalid-feedback{'style' => 'display: block;'}
+                  = f.object.errors[:address].join(', ')
+
+          .text-right
+            = f.submit 'Next', class: 'btn btn-primary waves-effect waves-light', 'data-disable-with' => 'Saving...'

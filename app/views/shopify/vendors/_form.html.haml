@@ -1,0 +1,47 @@
+= form_for (local_assigns[:vendor] || @vendor || Vendor.new), url: local_assigns[:form_url] || shopify_vendors_path, html: {'id' => 'new-vendor-form'} do |f|
+  
+  .form-group{'class' => "#{f.object.errors[:business_name].present? ? 'has-error' : ''}"}
+    = f.label :business_name, 'Business name', 'class' => ''
+    = f.text_field :business_name, 'class' => 'form-control', 'autofocus' => true
+    - if f.object.errors[:business_name].present?
+      %span.help-block= f.object.errors[:business_name].join(', ')
+
+  .form-group{'class' => "#{f.object.errors[:poc_first_name].present? ? 'has-error' : ''}"}
+    = f.label :poc_first_name, 'First name', 'class' => ''
+    = f.text_field :poc_first_name, 'class' => 'form-control'
+    - if f.object.errors[:poc_first_name].present?
+      %span.help-block= f.object.errors[:poc_first_name].join(', ')
+
+  .form-group{'class' => "#{f.object.errors[:poc_last_name].present? ? 'has-error' : ''}"}
+    = f.label :poc_last_name, 'Last name', 'class' => ''
+    = f.text_field :poc_last_name, 'class' => 'form-control'
+    - if f.object.errors[:poc_last_name].present?
+      %span.help-block= f.object.errors[:poc_last_name].join(', ')
+
+  .form-group{'class' => "#{f.object.errors[:phone_number].present? ? 'has-error' : ''}"}
+    = f.label :phone_number, 'Phone number', 'class' => ''
+    = f.text_field :phone_number, 'class' => 'form-control'
+    - if f.object.errors[:phone_number].present?
+      %span.help-block= f.object.errors[:phone_number].join(', ')
+
+  .form-group{'class' => "#{f.object.errors[:email].present? ? 'has-error' : ''}"}
+    = f.label :email, 'Email', 'class' => ''
+    = f.text_field :email, 'class' => 'form-control', 'readonly' => (!f.object.new_record? || local_assigns[:make_readonly_email])
+    - if f.object.errors[:email].present?
+      %span.help-block= f.object.errors[:email].join(', ')
+
+  .form-group{'class' => "#{f.object.errors[:tax_id].present? ? 'has-error' : ''}"}
+    = f.label :tax_id, 'Tax ID', 'class' => ''
+    = f.text_field :tax_id, 'class' => 'form-control'
+    - if f.object.errors[:tax_id].present?
+      %span.help-block= f.object.errors[:tax_id].join(', ')
+  
+  .form-group{'class' => "#{f.object.errors[:address].present? ? 'has-error' : ''}"}
+    = f.label :address, 'Address', 'class' => ''
+    = f.text_area :address, 'class' => 'form-control'
+    - if f.object.errors[:address].present?
+      %span.help-block= f.object.errors[:address].join(', ')
+
+  - if local_assigns[:show_submit]
+    .form-commands
+      = f.submit 'Save', 'class' => 'btn btn-primary btn-lg'

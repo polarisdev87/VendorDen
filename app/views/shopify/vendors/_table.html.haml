@@ -1,0 +1,22 @@
+- unless vendors.present?
+  %p
+    You have no vendors yet, Create new #{link_to('here', new_shopify_vendor_path)}.
+- else
+  %table.table.table-hover.table-striped
+    %thead
+      %th ID
+      %th Name
+      %th Created At
+      %th Status
+      %th Options
+    %tbody
+      - vendors.each do |vendor|
+        %tr
+          %td= vendor.id
+          %td= vendor.name
+          %td= vendor.created_at.strftime('%b %-d, %Y')
+          %td= vendor.status
+          - if (vendor.status == "Active")
+            %td= link_to "Deactivate", change_status_shopify_vendor_path(vendor.id), method: "patch"
+          - else
+            %td= link_to "Activate", change_status_shopify_vendor_path(vendor.id), method: "patch"

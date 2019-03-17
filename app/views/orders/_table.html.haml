@@ -1,0 +1,21 @@
+#orders-table-section
+  - unless orders.present?
+    %p
+      You have no orders yet.
+  - else
+    %table.table.table-hover.table-striped{'id' => 'orders-table'}
+      %thead
+        %th ID
+        %th Order Number
+        %th Customer
+        %th Created at
+        %th
+      %tbody
+        - orders.each do |order|
+          %tr
+            %td= order.id
+            %td= link_to order.order_number, order.order_status_url, 'target' => '_blank'
+            %td= "#{order.customer.first_name} #{order.customer.last_name}"
+            %td= Time.zone.parse(order.created_at).strftime('%Y-%m-%d')
+            %td
+

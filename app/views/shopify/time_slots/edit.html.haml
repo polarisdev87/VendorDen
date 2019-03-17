@@ -1,0 +1,52 @@
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      ShopifyApp.ready(function() {
+
+        ShopifyApp.Bar.initialize({ 
+          title: 'Edit TimeSlot #{@time_slot.description}',
+          breadcrumb: {
+            label: "Home",
+            href: "#{shopify_root_path}",
+            target: 'app',
+            loading: false
+          } 
+        });
+
+        $('#save-time-slot-button').on('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          var $button = $(this);
+          $button.html('Saving...');
+          $button.attr('disabled', 'disabled');
+
+          var $form = $('#edit-time-slot-form');
+          $form.submit();
+        });
+      });
+
+
+    })(window);
+
+.Polaris-Page
+  .Polaris-Page__Header.Polaris-Page__Header--hasBreadcrumbs.Polaris-Page__Header--hasSecondaryActions.Polaris-Page__Header--hasSeparator
+    .Polaris-Page__MainContent
+      
+      .Polaris-Page__TitleAndActions
+        .Polaris-Page__Title
+          %h1.Polaris-DisplayText.Polaris-DisplayText--sizeLarge 
+            Edit TimeSlot #{@time_slot.description}
+      
+      .Polaris-Page__PrimaryAction
+        .btn-group
+          %button{'type' => 'button', 'class' => 'btn btn-primary', 'id' => 'save-time-slot-button'}
+            Save
+
+  .Polaris-Page__Content
+    .Polaris-Layout
+      .Polaris-Layout__Section
+        .container-fluid
+          = render partial: 'shopify/time_slots/edit_form', locals: { time_slot: @time_slot }

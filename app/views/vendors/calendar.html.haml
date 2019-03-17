@@ -1,0 +1,38 @@
+%h2.page-title
+  Calendar
+
+.row
+  .col-md-12
+    .card
+      .card-body
+        #vendor-calendar
+    
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      $(function() {
+
+        $('#vendor-calendar').fullCalendar({
+          header: {
+            right:  'today month,agendaWeek,listWeek,basicWeek prev,next'
+          },
+          defaultView: 'agendaWeek',
+          slotEventOverlap: false,
+          eventSources: [
+            {
+              url: '#{time_slots_path(format: :json)}',
+              color: '#999999',
+              textColor: 'black' 
+            },
+            {
+              url: '#{bookings_vendor_path(format: :json)}',
+              color: '#76ff03',
+              textColor: 'black' 
+            }
+          ]
+        });
+      });
+      
+    })(window);

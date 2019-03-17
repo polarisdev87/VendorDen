@@ -1,0 +1,15 @@
+%tr{'data-id' => payout.id}
+  %td= payout.id
+  %td= payout.vendor.business_name
+  %td= payout.amount_sold
+  %td= payout.amount_commissions_earned
+  %td= payout.amount_to_be_paid_out
+  %td= payout.status.humanize
+  %td
+    - if payout.is_unpaid?
+      = link_to 'Manual Payout', manual_payment_shopify_payout_path(payout, format: :js), remote: true, method: :patch, data: {confirm: "Are you sure you want to do a manual payout?"}
+      - if payout.vendor.has_payment_info?
+        | 
+        = link_to 'Stripe Payout', stripe_payment_shopify_payout_path(payout, format: :js), remote: true, method: :patch, data: {confirm: "Are you sure you want to do a Stripe payout?"}
+    - else
+      = payout.payment_type.humanize

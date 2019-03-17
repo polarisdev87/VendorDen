@@ -1,0 +1,11 @@
+%table.table.table-hover.table-striped{'id' => 'payouts-table'}
+  %thead
+    %th ID
+    %th Vendor
+    %th $ Sold
+    %th $ Commissions earned
+    %th $ To be paid
+    %th Status
+  %tbody
+    - payouts.each do |payout|
+      = render partial: 'shopify/payouts/table_row', locals: {payout: payout}

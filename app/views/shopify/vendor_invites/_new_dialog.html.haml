@@ -1,0 +1,30 @@
+.modal.fade{'id' => 'invite-vendor-dialog', 'role' => 'dialog', :tabindex => "-1"}
+  .modal-dialog{'role' => 'document'}
+    .modal-content
+      .modal-header
+        %h4.modal-title Invite Vendor
+      .modal-body
+        = render partial: 'shopify/vendor_invites/form'
+      .modal-footer
+        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Cancel
+        %button.btn.btn-primary.save{:type => "button"} Send Invitation
+
+- content_for(:extra_javascript) do
+  :javascript
+    (function(global) {
+      'use strict';
+
+      $('#invite-vendor-dialog').on('shown.bs.modal', function (e) {
+        var $dialog = $(this);
+        var $form = $dialog.find('#new-vendor-invite-form');
+        var $saveButton = $dialog.find('.modal-footer button.save');
+        $saveButton.on('click', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          $form.submit();
+          $saveButton.html('Sending...');
+          $saveButton.attr('disabled', 'disabled');
+        });
+        $form.find('input[name="vendor_invite[email]"]').focus();
+      });
+    })(window);

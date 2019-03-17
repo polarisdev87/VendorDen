@@ -1,0 +1,19 @@
+= form_for user, url: form_url, html: {'id' => form_html_id} do |f|
+
+  .form-group{'class' => "#{f.object.errors[:email].present? ? 'has-error' : ''}"}
+    = f.label :email, 'Email', 'class' => ''
+    = f.text_field :email, 'class' => 'form-control', 'readonly' => true
+    - if f.object.errors[:email].present?
+      %span.help-block= f.object.errors[:email].join(', ')
+      
+  .form-group{'class' => "#{f.object.errors[:password].present? ? 'has-error' : ''}"}
+    = f.label :password, 'class' => ''
+    = f.password_field :password, 'class' => 'form-control', 'autofocus' => true
+    - if f.object.errors[:password].present?
+      %span.help-block= f.object.errors[:password].join(', ')
+  
+  .form-group{'class' => "#{f.object.errors[:password_confirmation].present? ? 'has-error' : ''}"}
+    = f.label :password_confirmation, 'class' => ''
+    = f.password_field :password_confirmation, 'class' => 'form-control', 'autofocus' => true
+    - if f.object.errors[:password_confirmation].present?
+      %span.help-block= f.object.errors[:password_confirmation].join(', ')

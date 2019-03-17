@@ -1,0 +1,36 @@
+.form-group{'class' => "#{f.object.errors[:description].present? ? 'has-error' : ''}"}
+  = f.label :description, 'class' => ''
+  = f.text_field :description, 'class' => 'form-control', 'autofocus' => true
+  - if f.object.errors[:description].present?
+    %span.help-block= f.object.errors[:description].join(', ')
+
+.form-group{'class' => "#{f.object.errors[:start_date].present? ? 'has-error' : ''}"}
+  = f.label :start_date, 'class' => ''
+  = f.text_field :start_date, 'class' => 'form-control', 'type' => 'date'
+  - if f.object.errors[:start_date].present?
+    %span.help-block= f.object.errors[:start_date].join(', ')
+
+.form-group{'class' => "#{f.object.errors[:start_time].present? ? 'has-error' : ''}"}
+  = f.label :start_time, 'class' => ''
+  = f.text_field :start_time, 'class' => 'form-control', 'type' => 'time'
+  - if f.object.errors[:start_time].present?
+    %span.help-block= f.object.errors[:start_time].join(', ')
+
+.form-group{'class' => "#{f.object.errors[:end_date].present? ? 'has-error' : ''}"}
+  = f.label :end_date, 'class' => ''
+  = f.text_field :end_date, 'class' => 'form-control', 'type' => 'date'
+  - if f.object.errors[:end_date].present?
+    %span.help-block= f.object.errors[:end_date].join(', ')
+
+.form-group{'class' => "#{f.object.errors[:end_time].present? ? 'has-error' : ''}"}
+  = f.label :end_time, 'class' => ''
+  = f.text_field :end_time, 'class' => 'form-control', 'type' => 'time'
+  - if f.object.errors[:end_time].present?
+    %span.help-block= f.object.errors[:end_time].join(', ')
+
+-#.checkbox{'class' => "#{f.object.errors[:is_all_day].present? ? 'has-error' : ''}"}
+-#  = f.label :is_all_day, 'class' => '' do
+-#    = f.check_box :is_all_day
+-#    = 'All day?'
+-#  - if f.object.errors[:is_all_day].present?
+-#    %span.help-block= f.object.errors[:is_all_day].join(', ')

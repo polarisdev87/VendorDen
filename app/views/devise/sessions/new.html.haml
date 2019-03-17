@@ -1,0 +1,62 @@
+!!!
+%html{'data-login' => true}
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title 
+      = app_name
+
+    = csrf_meta_tags
+    = csp_meta_tag
+    
+    :plain
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    :plain
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    = stylesheet_link_tag 'application', media: 'all'
+    
+    :plain
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+
+  %body.login.cd-shopify-skin{'aria-busy' => 'true'}
+    .view{:style => "background-image: url('#{asset_path('login_bg.jpg')}'); background-repeat: no-repeat; background-size: cover; background-position: center center;"}
+      .mask.rgba-gradient.d-flex.justify-content-center.align-items-center
+        .container
+          .row.mt-5
+            .col-md-4
+            .col-md-4.col-xl-5.mb-4
+              .card.login-card.wow.fadeInRight.animated{"data-wow-delay" => "0.3s", :style => "visibility: visible; animation-name: fadeInUp; animation-delay: 0.3s;"}
+                .card-header.text-left
+                  = app_logo
+                  %h3
+                    Login
+                .card-body
+                  %hr.hr-light/
+                  = form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: 'form-signin'}) do |f|
+                    - if flash[:alert].present?
+                      .alert.alert-warning{'role' => 'alert'}
+                        %button.close{"aria-label" => "Close", "data-dismiss" => "alert", :type => "button"}
+                          %span{"aria-hidden" => "true"} ×
+                        = flash[:alert]
+                    .md-form
+                      %i.fas.fa-user.prefix
+                      = f.email_field :email, placeholder: "Email", 'class' => 'form-control', autofocus: true, autocomplete: "email"
+                    .md-form
+                      %i.fas.fa-lock.prefix
+                      = f.password_field :password, placeholder: "Password", 'class' => 'form-control', autocomplete: "current-password"
+                    .text-center.mt-4
+                      %button.btn.btn-indigo.waves-effect.waves-light Login
+
+
+    = javascript_include_tag 'application'
+
+    :javascript
+      new WOW().init();

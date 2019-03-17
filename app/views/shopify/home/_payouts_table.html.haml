@@ -1,0 +1,5 @@
+- unless @payouts.present?
+  %p
+    You haven't made a payout yet.
+- else
+  = render partial: 'shopify/payouts/table', locals: {payouts: @payouts}

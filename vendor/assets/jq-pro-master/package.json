@@ -1,0 +1,65 @@
+{
+  "name": "mdbootstrap-pro",
+  "version": "4.5.7",
+  "description": "",
+  "main": "js/mdb.js",
+  "dependencies": {
+    "babel-preset-env": "^1.6.1",
+    "gulp": "^3.9.1",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-minify": "^2.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-strip-comments": "^2.5.2",
+    "gulp-strip-css-comments": "^2.0.0",
+    "gulp-uglify": "^3.0.0",
+    "install": "^0.10.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.1.2",
+    "browser-sync": "^2.18.13",
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "gulp": "^3.9.1",
+    "gulp-add-src": "^0.2.0",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-clean-css": "^3.0.4",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^3.0.0",
+    "gulp-sass": "^3.1.0",
+    "postcss-cli": "^4.1.1",
+    "stylelint": "~7.2.0",
+    "stylelint-config-recommended-scss": "^2.0.0",
+    "stylelint-config-standard": "^17.0.0",
+    "stylelint-order": "^0.7.0",
+    "stylelint-scss": "^2.1.0"
+  },
+  "scripts": {
+    "sass-lint": "stylelint --config config/.stylelintrc.json --syntax scss \"scss/**/*.scss\"",
+    "css-compile": "gulp css-compile",
+    "css-compile-free": "gulp css-compile-free",
+    "css-minify": "gulp css-minify",
+    "css-minify-free": "gulp css-minify-free",
+    "css-minify-docs": "gulp css-minify-docs",
+    "css-compile-docs": "gulp css-compile-docs",
+    "js-lint": "eslint --config .eslintrc.json js/modules/src",
+    "js-compile-plugins": "babel --presets env js/modules/src/ --out-dir js/modules/dist/",
+    "js-build": "gulp build-js",
+    "js-build-free": "gulp build-free-js",
+    "js-compile-docs": "gulp js-compile-docs",
+    "js-minify": "gulp js-minify",
+    "js-minify-free": "gulp js-minify-free",
+    "js-minify-docs": "gulp js-minify-docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+http://git.mdbootstrap.com/mdb/jquery/jq-pro.git"
+  },
+  "author": "MDBootstrap",
+  "license": "license.txt",
+  "homepage": "https://mdbootstrap.com",
+  "eslintIgnore": [
+    "js/modules/src/charts.js"
+  ]
+}

@@ -1,0 +1,23 @@
+
+<% if @resource.is_role_vendor? %>
+
+
+<p>Welcome <%= @email %>!</p>
+<p>You are invited by <%= @resource.shop.shopify_domain %> to be a vendor.</p>
+<p>You can confirm your account through the link below:</p>
+<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+
+
+<% else %>
+
+
+
+<p>Welcome <%= @email %>!</p>
+<p>You can confirm your account email through the link below:</p>
+<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+
+
+
+<% end %>
+

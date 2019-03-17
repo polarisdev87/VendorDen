@@ -1,0 +1,36 @@
+(function(global) {
+  'use strict';
+
+  var debug = function(msg) {
+    console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
+    console.log(msg);
+    console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=');
+  };
+
+  var setupOnProductTemplate = function() {
+
+    var $ctx = $('body.template-product');
+    if ($ctx.length == 0) return;
+    var $cardAddForm = $ctx.find('form[action="/cart/add"]');
+    if ($cardAddForm.length == 0) return;
+
+    var productId = $cardAddForm.attr('id').replace('product_form_', '');
+
+    var productInfoUrl = '<%= ENV['HOST'] %>/shopify/scripttags/products/' + productId + '/info.json?shop=<%= @shop.shopify_domain %>';
+    $cardAddForm.hide();
+    $.get(productInfoUrl, function(data) {
+      if (data.success) {
+        var $idInput = $cardAddForm.find('*[name="id"]');
+        $idInput.after(data.form_template);
+      }
+      $cardAddForm.show();
+    });
+  };
+
+  if ($ === undefined ) { return; }
+
+  $(function() {
+
+    setupOnProductTemplate();
+  });
+})(window);

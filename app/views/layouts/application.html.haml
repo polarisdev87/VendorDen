@@ -1,0 +1,119 @@
+!!!
+%html
+  %head
+    %meta{'content' => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{'charset' => "utf-8"}/
+    %meta{'content' => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}/
+    %meta{'content' => "ie=edge", "http-equiv" => "x-ua-compatible"}/
+    
+    %title VendorDen
+
+    = csrf_meta_tag
+    = csp_meta_tag
+    
+    :plain
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    = stylesheet_link_tag 'application', media: 'all'
+    - if content_for?(:extra_css)
+      = yield :extra_css
+    
+    :plain
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+
+  %body.fixed-sn.cd-shopify-skin.application{'class' => body_class}
+
+    %nav.navbar.navbar-expand-lg.navbar-dark.double-nav.fixed-top.scrolling-navbar
+  
+      .float-left
+        %a.button-collapse{"data-activates" => "slide-out", 'href' => "#"}
+          %i.fa.fa-bars
+
+      %h1.navbar-brand.ml-3 
+        = page_title
+      
+      - if user_signed_in?
+        %ul.nav.navbar-nav.nav-flex-icons.ml-auto
+          %li.nav-item.dropdown
+            %a#navbarDropdownMenuLink.nav-link.dropdown-toggle.waves-effect.waves-light{"aria-expanded" => "true", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#"}
+              %i.fa.fa-user
+              %span.clearfix.d-none.d-sm-inline-block
+                = current_user.email
+            .dropdown-menu.dropdown-menu-right{"aria-labelledby" => "navbarDropdownMenuLink"}
+              %span.dropdown-item.waves-effect.waves-light.d-md-none.d-sm-block
+                %small 
+                  Logged in as #{current_user.email}
+              = link_to 'Log Out', destroy_user_session_path, method: :delete, 'class' => 'dropdown-item waves-effect waves-light'
+
+    #slide-out.side-nav.fixed
+      %ul.custom-scrollbar
+        %li
+          .logo-wrapper
+            = link_to root_path do
+              = app_logo
+              %span.app-name
+                = app_name
+      %ul.collapsible.collapsible-accordion
+        - if is_user_role_vendor?
+        
+          %li
+            = link_to dashboard_vendor_path, 'class' => "collapsible-header waves-effect #{vendor_sidebar_active_class(:dashboard)}" do
+              %i.fa.fas.fa-home
+              Dashboard    
+          %li
+            = link_to calendar_vendor_path, 'class' => "collapsible-header waves-effect #{vendor_sidebar_active_class(:calendar)}" do
+              %i.fa.fas.fa-calendar-alt
+              Calendar
+          %li
+            = link_to products_vendor_path, 'class' => "collapsible-header waves-effect #{vendor_sidebar_active_class(:products)}" do
+              %i.fa.fas.fa-cubes
+              Products
+          %li
+            = link_to orders_vendor_path, 'class' => "collapsible-header waves-effect #{vendor_sidebar_active_class(:orders)}" do
+              %i.fa.fas.fa-box-open
+              Orders   
+        
+        - elsif is_user_role_admin?
+
+          %li
+            = link_to dashboard_admin_path, 'class' => "collapsible-header waves-effect #{admin_sidebar_active_class(:dashboard)}" do
+              %i.fa.fas.fa-home
+              Dashboard            
+
+    %main
+      .container-fluid        
+        = yield
+
+    %footer.page-footer.mt-4.fixed-bottom
+      .footer-copyright.text-center.py-3
+        .container-fluid
+          © 2019 Copyright:
+          = link_to "Launch Peer", 'https://launchpeer.com'    
+    
+    - if content_for?(:extra_html)
+      = yield :extra_html
+
+    = javascript_include_tag 'application'
+    - if content_for?(:extra_javascript)
+      = yield :extra_javascript
+
+    - flash_keys = flash.keys.select { |k| %w[success info warning error].include?(k) }
+    - if flash_keys.present?
+      - flash_keys.each do |flash_key|
+        :javascript
+          (function(global) {
+            'use strict';
+
+            var doExecute = function() {
+              toastr.options['positionClass'] = 'toast-top-right';
+              toastr.#{flash_key}('#{j(flash[flash_key.to_sym])}');
+            };
+
+            $(function() { doExecute(); });
+          })(window);
+

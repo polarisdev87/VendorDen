@@ -1,0 +1,6 @@
+%h2.page-header
+  Complete Your Vendor Info 
+  %small
+    Vendor Registration Wizard 2 of 3
+
+= render partial: 'shopify/vendors/form', locals: {show_submit: true, vendor: @vendor, form_url: complete_info_vendor_path(@vendor_invite), make_readonly_email: true}
